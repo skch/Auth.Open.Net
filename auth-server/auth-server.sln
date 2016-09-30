@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "auth-open-api", "auth-open-api\auth-open-api.csproj", "{2D006C7D-F0B7-4C45-A62A-B7C434CF5F1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "auth-open-lib", "auth-open-lib\auth-open-lib.csproj", "{46042D62-B3D8-4BAF-8743-2AEDEAE48281}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "auth-db-file", "auth-db-file\auth-db-file.csproj", "{EEB234F3-C765-4C2B-888C-5A08A419F07A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{2D006C7D-F0B7-4C45-A62A-B7C434CF5F1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D006C7D-F0B7-4C45-A62A-B7C434CF5F1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D006C7D-F0B7-4C45-A62A-B7C434CF5F1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46042D62-B3D8-4BAF-8743-2AEDEAE48281}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46042D62-B3D8-4BAF-8743-2AEDEAE48281}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46042D62-B3D8-4BAF-8743-2AEDEAE48281}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46042D62-B3D8-4BAF-8743-2AEDEAE48281}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEB234F3-C765-4C2B-888C-5A08A419F07A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEB234F3-C765-4C2B-888C-5A08A419F07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEB234F3-C765-4C2B-888C-5A08A419F07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEB234F3-C765-4C2B-888C-5A08A419F07A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

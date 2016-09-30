@@ -8,5 +8,10 @@ namespace Achi.Server.Models
 	public class ServiceResponse
 	{
 		public string status = "";
+
+		public override string ToString()
+		{
+			return status;
+		}
 	}
 }
