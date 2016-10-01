@@ -1,7 +1,5 @@
-﻿using Achi.Server.Generator;
-using Achi.Server.Models;
+﻿using Achi.Server.Models;
 using Achi.Storage;
-using Achi.Storage.Mock;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net;
@@ -14,10 +12,10 @@ namespace Achi.Server.Controllers
 	{
 		private IUserDataStorage storage;
 
-		private Token token;
+		//private Token token;
 		public AuthController()
 		{
-			storage = new MockDataStorage();		
+			//storage = new MockDataStorage();		
 		}
 
 		//POST
@@ -61,11 +59,13 @@ namespace Achi.Server.Controllers
 			if (status.HasErrors) return status;
 			try
 			{
+				/*
 				status.Authenticated = storage.Authenticating(status.Login, status.Password, status.ClientId);
 				if (!status.Authenticated)
 				{
 					status.SetError("authenticating", "login or password is wrong");
 				}
+				*/
 			}
 			catch (Exception ex)
 			{
@@ -79,8 +79,8 @@ namespace Achi.Server.Controllers
 			if (status.HasErrors) return status;
 			try
 			{
-				token = new Token();
-				status.Token = token.Generate();
+				//token = new Token();
+				//status.Token = token.Generate();
 			}
 			catch (Exception ex)
 			{
@@ -94,7 +94,7 @@ namespace Achi.Server.Controllers
 			if (status.HasErrors) return status;
 			try
 			{
-				storage.BindTokenWithUser(status.Login, status.Token);
+				//storage.BindTokenWithUser(status.Login, status.Token);
 			}
 			catch (Exception ex)
 			{

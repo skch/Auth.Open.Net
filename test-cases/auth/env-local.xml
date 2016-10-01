@@ -1,0 +1,8 @@
+<environment name="local">
+  <variables>
+    <var id="base" value="http://localhost:5892"  />
+    <var id="client" value="client4"  />
+  </variables>
+  <header-all>      
+  </header-all>
+</environment>

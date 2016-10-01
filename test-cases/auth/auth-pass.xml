@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rest type="POST" url="{{base}}/api/Authenticate/password">
+  <data>
+    {
+      "client_id": "{{client}}",
+      "login": "john",
+      "password": "example1"
+    }
+  </data>
+  <result code="200" type="application/json; charset=utf-8">
+   {
+      "type": "object",
+      "properties": {
+        "access_token": { "type": "string" },
+        "token_type": { "type": "string", "enum": ["bearer"] },
+        "expires_in": { "type": "integer" }
+      },
+      "required": ["access_token", "token_type", "expires_in"]
+    }
+  </result>
+</rest>

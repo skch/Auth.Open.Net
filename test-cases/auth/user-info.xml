@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rest type="GET" url="{{base}}/api/Account/UserInfo">
+  <result code="200" type="application/json; charset=utf-8">
+   {
+      "type": "object",
+      "properties": {
+        "Code": { "type": "integer" },
+        "Header": {
+          "type": "object",
+          "properties": {
+            "Status": { "type": "number" },
+            "Version": { "type": "string" },
+            "Environment": { "type": "string", "enum": ["IRIS-TEST"] },
+            "Duration": { "type": "number" }
+          },
+          "required": ["Status", "Version", "Environment", "Duration"]
+        },
+        "Data": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "ID": { "type": "integer" },
+              "FirstName": { "type": "string" },
+              "LastName": { "type": "string" },
+              "Prefix": { "type": "string" },
+              "Position": { "type": "string" }
+            },
+            "required": ["ID", "FirstName", "LastName", "Prefix", "Position"]
+          }
+        }
+      },
+      "required": ["Code", "Header", "Data"]
+    }
+  </result>
+</rest>

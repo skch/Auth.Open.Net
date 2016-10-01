@@ -71,10 +71,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Base\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Reference Include="WebActivatorEx">
       <HintPath>..\packages\WebActivatorEx.2.0.6\lib\net40\WebActivatorEx.dll</HintPath>
@@ -93,6 +90,7 @@
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="packages.config" />
+    <Content Include="App_Data\user-john.json" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +98,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
-    <Compile Include="Generator\Token.cs" />
+    <Compile Include="Controllers\AuthenticateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -109,8 +107,12 @@
     <Compile Include="Models\ServiceFailed.cs" />
     <Compile Include="Models\ServiceOK.cs" />
     <Compile Include="Models\ServiceResponse.cs" />
+    <Compile Include="Models\SimpleCredentials.cs" />
     <Compile Include="Models\UserInfo.cs" />
+    <Compile Include="Models\UserTokenDocument.cs" />
+    <Compile Include="Models\UserTokenInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Storage\ApiCallSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Web.Debug.config">

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<runbook>
+  <header>
+  </header>
+  <sequence id="OAuth2">
+    <test src="user-info" />
+    <test src="auth-pass" />
+  </sequence>
+</runbook>
