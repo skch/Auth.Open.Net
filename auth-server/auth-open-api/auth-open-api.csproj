@@ -88,9 +88,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="packages.config" />
     <Content Include="App_Data\user-john.json" />
+    <Content Include="App_Data\config-storage.json" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>

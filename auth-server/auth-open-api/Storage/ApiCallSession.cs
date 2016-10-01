@@ -12,11 +12,11 @@ namespace Achi.Server.Storage
 
 		public static IUserDataStorage DB;
 
-		public static async Task InitializeAsync(string appDataPath)
+		public static async Task InitializeAsync()
 		{
 
 			// Connect to the data provider here
-			DB = new FileUserStorage() { dbPath = appDataPath };
+			DB = new FileUserStorage();
 			await DB.InitAsync();
 		}
 

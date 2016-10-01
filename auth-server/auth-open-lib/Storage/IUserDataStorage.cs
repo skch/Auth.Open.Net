@@ -10,6 +10,7 @@ namespace Achi.Storage
 	public interface IUserDataStorage
 	{
 
+		bool IsOpen();
 		Task InitAsync();
 
 		Task SaveDocument(string type, string id, JToken data);

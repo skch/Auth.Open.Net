@@ -20,8 +20,7 @@ namespace Achi.Server.Controllers
 		// Make sure the controller is connected to the data provider
 		public AuthenticateController()
 		{
-			var appData = System.Web.Hosting.HostingEnvironment.MapPath("~/App_Data");
-			Initilization = ApiCallSession.InitializeAsync(appData);
+			Initilization = ApiCallSession.InitializeAsync();
 		}
 
 
@@ -32,13 +31,14 @@ namespace Achi.Server.Controllers
 		public async Task<IHttpActionResult> Post(SimpleCredentials cr)
 		{
 			await Initilization;
+			if (!ApiCallSession.DB.IsOpen()) return InternalServerError();
 			var user = await ApiCallSession.DB.GetDocument("user",cr.login);
 			if (user["error"] != null) return this.Unauthorized();
 
 			string passwordHash = user["password"].ToString();
 			string receivedPasswordHash = AuthSecurity.GetPasswordHash(cr.password);
 
-			if (passwordHash != receivedPasswordHash) return this.Unauthorized();
+			if (passwordHash != receivedPasswordHash) return Unauthorized();
 
 			var doc = new UserTokenDocument() {
 				token = AuthSecurity.CreateNewToken(),

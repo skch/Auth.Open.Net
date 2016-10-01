@@ -2,6 +2,8 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,12 +14,32 @@ namespace Achi
 	public class FileUserStorage : IUserDataStorage
 	{
 
-		public string dbPath = "";
+		private bool isOpen = false;
+
+		private string _dbPath = null;
+		protected string dbPath
+		{
+			get
+			{
+				if (_dbPath == null)
+				{
+					string dpath = ConfigurationManager.AppSettings["db-path"];
+					_dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, dpath);
+				}
+				return _dbPath;
+			}
+		}
 
 		#region Interface methods
+
+		public bool IsOpen()
+		{
+			return isOpen;
+		}
+
 		public async Task InitAsync()
 		{
-			return;
+			isOpen = await DocumentExists("config", "storage");
 		}
 
 		public async Task SaveDocument(string type, string id, JToken data) {
