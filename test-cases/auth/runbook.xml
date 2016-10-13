@@ -2,8 +2,8 @@
 <runbook>
   <header>
   </header>
-  <sequence id="OAuth2">
-    <test src="user-info" />
-    <test src="auth-pass" />
+  <sequence id="OAuth2">  
+    <test src="auth-pass" out="result"/>
+	<test src="user-info"/>
   </sequence>
 </runbook>

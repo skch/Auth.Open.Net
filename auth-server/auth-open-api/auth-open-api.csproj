@@ -102,6 +102,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\AuthenticateController.cs" />
+    <Compile Include="Models\UserInfoDocument.cs" />
+    <Compile Include="Models\TokenCredentials.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -115,7 +117,7 @@
     <Compile Include="Models\UserTokenDocument.cs" />
     <Compile Include="Models\UserTokenInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Storage\ApiCallSession.cs" />
+    <Compile Include="Models\Storage\ApiCallSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Web.Debug.config">

@@ -7,12 +7,12 @@
       "password": "example1"
     }
   </data>
-  <result code="200" type="application/json; charset=utf-8">
+  <result code="200" type="application/json; charset=utf-8" saveToVar="user-token">
    {
       "type": "object",
       "properties": {
         "access_token": { "type": "string" },
-        "token_type": { "type": "string", "enum": ["bearer"] },
+        "token_type": { "type": "string", "enum": ["temp"] },
         "expires_in": { "type": "integer" }
       },
       "required": ["access_token", "token_type", "expires_in"]

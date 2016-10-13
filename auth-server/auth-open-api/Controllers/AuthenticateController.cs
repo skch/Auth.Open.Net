@@ -1,6 +1,7 @@
 ﻿using Achi.Security;
 using Achi.Server.Models;
 using Achi.Server.Storage;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,32 @@ namespace Achi.Server.Controllers
 			return Ok(res);
 		}
 
+		//POST: api/Authenticate/token
+		//Get user details by token
+		[Route("api/Authenticate/UserInfo")]
+		[HttpPost]
+		public async Task<IHttpActionResult> Validate(TokenCredentials tc)
+		{
+			await Initilization;
+			if (!ApiCallSession.DB.IsOpen()) return InternalServerError();
+			//if(tc.client_id == )
+			var token = await ApiCallSession.DB.GetDocument("token", tc.access_token);
 
+			if (token["error"] != null) return Unauthorized();
+			UserTokenDocument doc = JsonConvert.DeserializeObject<UserTokenDocument>(token.ToString());
+			
+			if (doc.expires <= DateTime.Now)
+			{
+				await ApiCallSession.DB.DeleteDocument("token", tc.access_token);
+				return Unauthorized();
+			}
+
+			var juser = await ApiCallSession.DB.GetDocument("user", doc.user);
+			if (juser["error"] != null) return this.NotFound();
+
+			UserInfoDocument user = JsonConvert.DeserializeObject<UserInfoDocument>(juser.ToString());
+			
+			return Ok(user);
+		}
 	}
 }

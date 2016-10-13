@@ -1,5 +1,10 @@
 ﻿{
 	"login": "john",
 	"password": "example1",
-	"email":  "john.doe@email.com"
+	"email": "john.doe@email.com",
+	"ID": 123,
+	"FirstName": "Jhon",
+	"LastName": "Doe",
+	"Prefix": "mr.",
+	"Position": "President"
 }
