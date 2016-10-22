@@ -65,7 +65,7 @@ namespace Achi.Server.Controllers
 			var token = await ApiCallSession.DB.GetDocument("token", tc.access_token);
 
 			if (token["error"] != null) return Unauthorized();
-			UserTokenDocument doc = JsonConvert.DeserializeObject<UserTokenDocument>(token.ToString());
+			UserTokenDocument doc = token.ToObject<UserTokenDocument>();
 			
 			if (doc.expires <= DateTime.Now)
 			{
@@ -76,7 +76,7 @@ namespace Achi.Server.Controllers
 			var juser = await ApiCallSession.DB.GetDocument("user", doc.user);
 			if (juser["error"] != null) return this.NotFound();
 
-			UserInfoDocument user = JsonConvert.DeserializeObject<UserInfoDocument>(juser.ToString());
+			UserInfoDocument user = juser.ToObject<UserInfoDocument>();
 			
 			return Ok(user);
 		}
