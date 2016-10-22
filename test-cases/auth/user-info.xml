@@ -4,7 +4,7 @@
 	{
 	    "client_id": "{{client}}",
 		"response_type": "code",
-		"token":"{{result/access_token}}"
+		"access_token":"{{var1/access_token}}"
 	}
   </data>
   <result code="200" type="application/json; charset=utf-8">

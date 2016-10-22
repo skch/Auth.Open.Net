@@ -7,7 +7,7 @@
       "password": "example1"
     }
   </data>
-  <result code="200" type="application/json; charset=utf-8" saveToVar="user-token">
+  <result code="200" type="application/json; charset=utf-8" >
    {
       "type": "object",
       "properties": {
