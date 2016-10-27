@@ -38,8 +38,7 @@ namespace Achi.Server.Controllers
 
 			string passwordHash = user["password"].ToString();
 			string receivedPasswordHash = AuthSecurity.GetPasswordHash(cr.password);
-
-			if (passwordHash != receivedPasswordHash) return Unauthorized();
+			if (!AuthSecurity.IsPasswordValid(passwordHash, receivedPasswordHash)) return Unauthorized();
 
 			var doc = new UserTokenDocument() {
 				token = AuthSecurity.CreateNewToken(),
