@@ -2,6 +2,9 @@
   <variables>
     <var id="base" value="http://localhost:5892"  />
     <var id="client" value="client4"  />
+	<var id="email" value="john.doe@email.com"  />
+	<var id="login" value="john1"  />
+	<var id="password" value="example1"  />
   </variables>
   <header-all>      
   </header-all>

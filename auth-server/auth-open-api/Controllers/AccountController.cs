@@ -1,4 +1,7 @@
-﻿using Achi.Server.Models;
+﻿using Achi.Security;
+using Achi.Server.Models;
+using Achi.Server.Storage;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,20 +12,13 @@ using System.Web.Http;
 
 namespace Achi.Server.Controllers
 {
-	public class AccountController : ApiController
-	{
-
-		public AccountController()
-		{
-		}
-
-		// GET api/Account/UserInfo
-		[Route("UserInfo")]
-		public UserInfo GetUserInfo()
-		{
-			return new UserInfo();
-		}
-
+	public class AccountController : BaseController
+	{		
+		// Make sure the controller is connected to the data provider
+		public AccountController() : base()
+		{			
+		}	
+		
 		// POST api/Account/Logout
 		[Route("Logout")]
 		public IHttpActionResult Logout()
@@ -89,11 +85,40 @@ namespace Achi.Server.Controllers
 
 		// POST api/Account/Register
 		[AllowAnonymous]
-		[Route("Register")]
+		[Route("api/Account/Register")]
 		public async Task<IHttpActionResult> Register(RegisterModel model)
 		{
+			if (!await InitDb()) return InternalServerError();
 
-			return Ok();
+			var user = await ApiCallSession.DB.GetDocument("user", model.login);
+			//User exist - return correct error
+			if (user["error"] == null) return InternalServerError();
+
+			string receivedPasswordHash = AuthSecurity.GetPasswordHash(model.password);
+
+			User newUser = new Models.User() {
+				email = model.email,
+				login = model.login,
+				inactive = true,
+				password = receivedPasswordHash
+				};
+			var juser = JObject.FromObject(newUser);
+			juser.Merge(JObject.FromObject(model.user_info));		
+
+			await ApiCallSession.DB.SaveDocument("user", model.login, juser);
+
+			var doc = new UserTokenDocument()
+			{
+				token = AuthSecurity.CreateNewToken(),
+				type = "validation",
+				user = model.login,
+				expires = DateTime.Now.AddMinutes(5)
+			};
+
+			var res = SaveToken(doc);
+			//send email
+			await ApiCallSession.Sender.Send(model.email, "Confirm registration", doc.token);
+			return Ok(res.Result);
 		}
 
 		// POST api/Account/RegisterExternal

@@ -2,8 +2,17 @@
 <runbook>
   <header>
   </header>
-  <sequence id="OAuth2">  
-    <test src="auth-pass" out="var1"/>
-	<test src="user-info"/>
+  <variables>
+	<!--<var id="user" value="" /> -->
+  </variables>
+  <sequence id="OAuth2" showContext="yes">  	    
+	<context>{"user": {} }</context>
+	<test src="register-user" save="user"/>
+	<test src="auth-pass" save="var1" disable="yes">
+		<header>
+			<header id="token" value="{{access_token}}" />
+		</header>
+	</test>
+	<test src="user-info" disable="yes"/> 
   </sequence>
 </runbook>
