@@ -14,14 +14,11 @@ using System.Web.Http;
 
 namespace Achi.Server.Controllers
 {
-	public class AuthenticateController : ApiController
+	public class AuthenticateController : BaseController
 	{
-		public Task Initilization { get; private set; }
-
 		// Make sure the controller is connected to the data provider
-		public AuthenticateController()
-		{
-			Initilization = ApiCallSession.InitializeAsync();
+		public AuthenticateController():base()
+		{			
 		}
 
 
@@ -31,15 +28,14 @@ namespace Achi.Server.Controllers
 		[HttpPost]
 		public async Task<IHttpActionResult> Post(SimpleCredentials cr)
 		{
-			await Initilization;
-			if (!ApiCallSession.DB.IsOpen()) return InternalServerError();
+			if (!await InitDb()) return InternalServerError();
+
 			var user = await ApiCallSession.DB.GetDocument("user",cr.login);
 			if (user["error"] != null) return this.Unauthorized();
 
 			string passwordHash = user["password"].ToString();
 			string receivedPasswordHash = AuthSecurity.GetPasswordHash(cr.password);
-
-			if (passwordHash != receivedPasswordHash) return Unauthorized();
+			if (!AuthSecurity.IsPasswordValid(passwordHash, receivedPasswordHash)) return Unauthorized();
 
 			var doc = new UserTokenDocument() {
 				token = AuthSecurity.CreateNewToken(),
@@ -47,10 +43,8 @@ namespace Achi.Server.Controllers
 				user = cr.login,
 				expires = DateTime.Now.AddHours(12)
 			};
-			await ApiCallSession.DB.SaveDocument("token", doc.token, JObject.FromObject(doc));
 
-			var res = new UserTokenInfo(doc);
-			return Ok(res);
+			return Ok(SaveToken(doc));
 		}
 
 		//POST: api/Authenticate/token
@@ -59,8 +53,7 @@ namespace Achi.Server.Controllers
 		[HttpPost]
 		public async Task<IHttpActionResult> Validate(TokenCredentials tc)
 		{
-			await Initilization;
-			if (!ApiCallSession.DB.IsOpen()) return InternalServerError();
+			if (!await InitDb()) return InternalServerError();
 			//if(tc.client_id == )
 			var token = await ApiCallSession.DB.GetDocument("token", tc.access_token);
 
@@ -79,6 +72,6 @@ namespace Achi.Server.Controllers
 			UserInfoDocument user = juser.ToObject<UserInfoDocument>();
 			
 			return Ok(user);
-		}
+		}		
 	}
 }

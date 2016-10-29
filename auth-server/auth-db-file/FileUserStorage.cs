@@ -1,4 +1,5 @@
-﻿using Achi.Storage;
+﻿using Achi.Sender;
+using Achi.Storage;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Achi
 {
-	public class FileUserStorage : IUserDataStorage
+	public class FileUserStorage : IUserDataStorage, IUserRegistration
 	{
 
 		private bool isOpen = false;
@@ -76,6 +77,17 @@ namespace Achi
 			await FileDeleteAsync(fi);
 		}
 
+		public async Task Send(string address, string subject, string body)
+		{
+			string fname = Path.Combine(dbPath, "email-" + address + ".json");
+			dynamic message = new JObject();
+			message.address = address;
+			message.subject = subject;
+			message.body = body;
+			await writeAllText(fname, message.ToString());
+
+		}
+		
 		#endregion
 
 
@@ -123,8 +135,7 @@ namespace Achi
 				writer.Flush();
 			}
 
-		}
-
+		}		
 		#endregion
 
 	}

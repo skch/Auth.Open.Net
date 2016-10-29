@@ -11,5 +11,6 @@ namespace Achi.Server.Models
 		public string type;
 		public string user;
 		public DateTime expires;
+		public bool inactive = false;		
 	}
 }

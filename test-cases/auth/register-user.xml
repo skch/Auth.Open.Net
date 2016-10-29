@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rest type="POST" url="{{base}}/api/Account/Register">
+  <data>
+    {
+		"client_id": "{{client}}",
+		"client_secret": "mySecret",
+		"email": "{{email}}",
+		"password": "{{password}}",
+		"login": "{{login}}",
+		"user_info": {
+			"FirstName": "Jhon",
+			"LastName": "Doe",
+			"Prefix": "mr.",
+			"Position": "President"
+		}
+	}
+  </data>
+  <result code="200" type="application/json; charset=utf-8" >
+   {
+      "type": "object",
+      "properties": {
+        "access_token": { "type": "string" },
+        "token_type": { "type": "string", "enum": ["validation"] },
+        "expires_in": { "type": "integer" }
+      },
+      "required": ["access_token", "token_type", "expires_in"]
+    }
+  </result>
+</rest>

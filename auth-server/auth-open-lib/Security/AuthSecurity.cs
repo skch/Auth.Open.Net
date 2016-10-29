@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Sodium;
+using System;
 
 namespace Achi.Security
 {
@@ -10,7 +7,21 @@ namespace Achi.Security
 	{
 		public static string GetPasswordHash(string password)
 		{
+			//this will produce a 32 byte hash and salt, to verify
+			try
+			{
+				var hash = PasswordHash.ScryptHashString(password, PasswordHash.Strength.Medium);
+				return hash;
+			} catch(Exception ex)
+			{
+
+			}
 			return password;
+		}
+
+		public static bool IsPasswordValid(string hash, string password)
+		{
+			return PasswordHash.ScryptHashStringVerify(hash, password);
 		}
 
 		public static string CreateNewToken()
