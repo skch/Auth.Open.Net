@@ -53,6 +53,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\UserInfo.cs" />
     <Compile Include="Security\AuthSecurity.cs" />
+    <Compile Include="Sender\IUserRegistration.cs" />
     <Compile Include="Storage\IUserDataStorage.cs" />
   </ItemGroup>
   <ItemGroup>
