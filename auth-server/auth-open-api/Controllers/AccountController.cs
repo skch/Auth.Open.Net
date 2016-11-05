@@ -73,14 +73,40 @@ namespace Achi.Server.Controllers
 			return Ok();
 		}
 
-		// GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
+		// GET api/Account/Confirmation?token=%2F
 		[AllowAnonymous]
-		[Route("ExternalLogins")]
-		public async Task<IHttpActionResult> GetExternalLogins(string returnUrl, bool generateState = false)
+		[Route("api/Account/Confirmation")]
+		public async Task<IHttpActionResult> Confirmation(string token)
 		{
+			if (!await InitDb()) return InternalServerError();
 
+			var doc = await ApiCallSession.DB.GetDocument("token", token);			
+			if (doc["error"] != null) return InternalServerError();
 
-			return Ok();
+			UserTokenDocument userToken = doc.ToObject<UserTokenDocument>();
+
+			if(userToken.expires <= DateTime.Now)
+			{
+				await ApiCallSession.DB.DeleteDocument("token", token);
+				//token expired -> return error
+				return InternalServerError();
+			}
+			//delete temporary token
+			await ApiCallSession.DB.DeleteDocument("token", token);
+						
+			//generate new token
+			var newToken = await CreateNewToken(userToken.user);
+			var ju = await ApiCallSession.DB.GetDocument("user", newToken.user);
+			var u = ju.ToObject<User>();
+			u.inactive = false;
+			//activate user
+			await ApiCallSession.DB.SaveDocument("user", u.email, JObject.FromObject(u));
+			//send email
+			await ApiCallSession.Sender.Send(u.email, "Registration finished", "You're registred successfully!");					
+			//save new token in db
+			var user = await SaveToken(newToken);
+
+			return Ok(user);
 		}
 
 		// POST api/Account/Register
@@ -90,7 +116,7 @@ namespace Achi.Server.Controllers
 		{
 			if (!await InitDb()) return InternalServerError();
 
-			var user = await ApiCallSession.DB.GetDocument("user", model.login);
+			var user = await ApiCallSession.DB.GetDocument("user", model.email);
 			//User exist - return correct error
 			if (user["error"] == null) return InternalServerError();
 
@@ -98,26 +124,26 @@ namespace Achi.Server.Controllers
 
 			User newUser = new Models.User() {
 				email = model.email,
-				login = model.login,
 				inactive = true,
 				password = receivedPasswordHash
 				};
 			var juser = JObject.FromObject(newUser);
 			juser.Merge(JObject.FromObject(model.user_info));		
 
-			await ApiCallSession.DB.SaveDocument("user", model.login, juser);
+			await ApiCallSession.DB.SaveDocument("user", model.email, juser);
 
 			var doc = new UserTokenDocument()
 			{
 				token = AuthSecurity.CreateNewToken(),
 				type = "validation",
-				user = model.login,
+				user = model.email,
 				expires = DateTime.Now.AddMinutes(5)
 			};
 
-			var res = SaveToken(doc);
+			var res = SaveToken(doc);			 
 			//send email
-			await ApiCallSession.Sender.Send(model.email, "Confirm registration", doc.token);
+			string url = Url.Link("DefaultApi", new { controller = "Account/Confirmation", token = doc.token });			
+			await ApiCallSession.Sender.Send(model.email, "Confirm registration", url);
 			return Ok(res.Result);
 		}
 

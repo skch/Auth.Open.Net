@@ -3,8 +3,8 @@
   <data>
     {
       "client_id": "{{client}}",
-      "login": "john",
-      "password": "example1"
+      "login": "{{email}}",
+      "password": "{{password}}"
     }
   </data>
   <result code="200" type="application/json; charset=utf-8" >

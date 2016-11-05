@@ -2,7 +2,6 @@
 {
 	public class User
 	{
-		public string login;
 		public string password;
 		public string email;
 		public bool inactive;

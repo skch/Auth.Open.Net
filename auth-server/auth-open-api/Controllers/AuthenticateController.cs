@@ -33,16 +33,10 @@ namespace Achi.Server.Controllers
 			var user = await ApiCallSession.DB.GetDocument("user",cr.login);
 			if (user["error"] != null) return this.Unauthorized();
 
-			string passwordHash = user["password"].ToString();
-			string receivedPasswordHash = AuthSecurity.GetPasswordHash(cr.password);
-			if (!AuthSecurity.IsPasswordValid(passwordHash, receivedPasswordHash)) return Unauthorized();
+			string passwordHash = user["password"].ToString();			
+			if (!AuthSecurity.IsPasswordValid(passwordHash, cr.password)) return Unauthorized();
 
-			var doc = new UserTokenDocument() {
-				token = AuthSecurity.CreateNewToken(),
-				type = "temp",
-				user = cr.login,
-				expires = DateTime.Now.AddHours(12)
-			};
+			var doc = await CreateNewToken(cr.login);
 
 			return Ok(SaveToken(doc));
 		}
