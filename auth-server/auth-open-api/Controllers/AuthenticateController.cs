@@ -38,7 +38,7 @@ namespace Achi.Server.Controllers
 
 			var doc = await CreateNewToken(cr.login);
 
-			return Ok(SaveToken(doc));
+			return Ok(SaveToken(doc).Result);
 		}
 
 		//POST: api/Authenticate/token
