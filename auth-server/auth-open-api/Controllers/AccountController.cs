@@ -81,7 +81,7 @@ namespace Achi.Server.Controllers
 			if (!await InitDb()) return InternalServerError();
 
 			var doc = await ApiCallSession.DB.GetDocument("token", token);			
-			if (doc["error"] != null) return InternalServerError();
+			if (doc["error"] != null) return BadRequest("User exists");
 
 			UserTokenDocument userToken = doc.ToObject<UserTokenDocument>();
 
@@ -89,7 +89,7 @@ namespace Achi.Server.Controllers
 			{
 				await ApiCallSession.DB.DeleteDocument("token", token);
 				//token expired -> return error
-				return InternalServerError();
+				return BadRequest("token was expire");
 			}
 			//delete temporary token
 			await ApiCallSession.DB.DeleteDocument("token", token);
