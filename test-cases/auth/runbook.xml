@@ -6,13 +6,10 @@
 	<!--<var id="user" value="" /> -->
   </variables>
   <sequence id="OAuth2" showContext="yes">  	    
-	<context>{"user": {} }</context>
+	<context>{}</context>
 	<test src="register-user" save="user"/>
-	<test src="auth-pass" save="var1" disable="yes">
-		<header>
-			<header id="token" value="{{access_token}}" />
-		</header>
-	</test>
-	<test src="user-info" disable="yes"/> 
+	<test src="register-confirm" save="user1" />
+	<test src="auth-pass" save="var1" disable="no" />			
+	<test src="user-info" disable="no"/> 
   </sequence>
 </runbook>

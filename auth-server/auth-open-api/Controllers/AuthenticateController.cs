@@ -37,12 +37,7 @@ namespace Achi.Server.Controllers
 			string receivedPasswordHash = AuthSecurity.GetPasswordHash(cr.password);
 			if (!AuthSecurity.IsPasswordValid(passwordHash, receivedPasswordHash)) return Unauthorized();
 
-			var doc = new UserTokenDocument() {
-				token = AuthSecurity.CreateNewToken(),
-				type = "temp",
-				user = cr.login,
-				expires = DateTime.Now.AddHours(12)
-			};
+			var doc = await CreateNewToken(cr.login);
 
 			return Ok(SaveToken(doc));
 		}

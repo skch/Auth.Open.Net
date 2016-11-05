@@ -1,4 +1,5 @@
-﻿using Achi.Server.Models;
+﻿using Achi.Security;
+using Achi.Server.Models;
 using Achi.Server.Storage;
 using Newtonsoft.Json.Linq;
 using System;
@@ -32,6 +33,17 @@ namespace Achi.Server.Controllers
 		{
 			await Initilization;
 			return ApiCallSession.DB.IsOpen();
+		}
+
+		protected async Task<UserTokenDocument> CreateNewToken(string login)
+		{
+			return new UserTokenDocument()
+			{
+				token = AuthSecurity.CreateNewToken(),
+				type = "temp",
+				user = login,
+				expires = DateTime.Now.AddHours(12)
+			};
 		}
 	}
 }
